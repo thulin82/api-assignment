@@ -35,7 +35,7 @@ pipeline {
     post {
         always {
                 sh 'docker-compose down'
-                step([$class: 'MSTestPublisher', testResultsFile:"/home/docker/TodoApiTests/TestResults/*.trx", failOnError: false, keepLongStdio: true])
+                step([$class: 'MSTestPublisher', testResultsFile:"reports/*.trx", failOnError: false, keepLongStdio: true])
                 cleanWs()
         }
     }
