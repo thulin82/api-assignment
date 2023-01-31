@@ -1,5 +1,9 @@
 pipeline {
-    agent any 
+    agent any
+    // Enable section to set up scheduled job 
+    //triggers {
+    //    cron('H 6 * * *')
+    //}
     stages {
         stage('Deploy SUT') {
             steps {
