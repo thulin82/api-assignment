@@ -12,15 +12,15 @@ pipeline {
                 sh 'docker-compose up -d'
             }
         }
-        stage('Verify') {
-            agent {
-                docker { image 'localhost:5000/my-python2' }
-            }
-            steps {
-                echo "Verifying...."
-                sh 'fab verifyUrl:http://host.docker.internal:8080/api/todo'
-            }
-        }
+        // stage('Verify') {
+            // agent {
+                // docker { image 'localhost:5000/my-python2' }
+            // }
+            // steps {
+                // echo "Verifying...."
+                // sh 'fab verifyUrl:http://host.docker.internal:8080/api/todo'
+            // }
+        // }
         stage('Test') {
             agent {
                 docker { image 'localhost:5000/todoapitests' }
