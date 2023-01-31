@@ -26,14 +26,24 @@ pipeline {
                 docker { image 'localhost:5000/todoapitests' }
             }
             steps {
-                sh 'cd /home/docker/TodoApiTests;ls -la;dotnet vstest out/TodoApiTests.dll --logger:trx'
+                sh 'cd /home/docker/TodoApiTests;ls -la;dotnet vstest out/TodoApiTests.dll --logger:"html;LogFileName=TestReport.html"'
                 sh 'cd /home/docker/TodoApiTests/TestResults; ls'
+                sh "cp -R /home/docker/TodoApiTests/TestResults reports"
             }
         }
     }
     post {
         always {
                 sh 'docker-compose down'
+                archiveArtifacts artifacts: 'reports/**', fingerprint: true
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'TestReport.html',
+                    reportName: 'TestReport'
+                ])
                 cleanWs()
         }
     }
