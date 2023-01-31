@@ -1,33 +1,11 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-do CRUD</title>
-    <style>
-        input[type='submit'], button, [aria-label] {
-            cursor: pointer;
-        }
-
-        #spoiler {
-            display: none;
-        }
-
-        table {
-            font-family: Arial, sans-serif;
-            border: 1px solid;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #0066CC;
-            color: white;
-        }
-
-        td {
-            border: 1px solid;
-            padding: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <h1>To-do CRUD</h1>
@@ -52,10 +30,10 @@
 
     <table>
         <tr>
-            <th>Is Complete</th>
+            <th>Complete?</th>
             <th>Name</th>
-            <th></th>
-            <th></th>
+            <th><i class="fa fa-edit"></i></th>
+            <th><i class="fa fa-trash"></i></th>
         </tr>
         <tbody id="todos"></tbody>
     </table>
