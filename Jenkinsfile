@@ -26,7 +26,7 @@ pipeline {
                 docker { image 'localhost:5000/todoapitests' }
             }
             steps {
-                sh 'cd /app/TodoApiTests;pwd;ls;dotnet test --logger:trx TodoApiTests.csproj'
+                sh 'pwd;ls;dotnet vstest TodoApiTests.dll --logger:trx'
             }
         }
     }
