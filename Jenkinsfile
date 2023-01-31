@@ -23,7 +23,10 @@ pipeline {
         }
         stage('Test') {
             agent {
-                docker { image 'localhost:5000/todoapitests' }
+                docker {
+                    image 'localhost:5000/todoapitests'
+                    reuseNode true
+                }
             }
             steps {
                 sh 'cd /home/docker/TodoApiTests;ls -la;dotnet vstest out/TodoApiTests.dll --logger:trx'
