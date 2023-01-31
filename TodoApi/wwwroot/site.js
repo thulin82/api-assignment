@@ -1,134 +1,135 @@
-const uri = "api/todo";
-let todos = null;
-function getCount(data) {
-    const el = $("#counter");
-    let name = "to-do";
-    if (data) {
-        if (data > 1) {
-            name = "to-dos";
-        }
-        el.text(data + " " + name);
-    } else {
-        el.text("No " + name);
-    }
+// <snippet_SiteJs>
+const uri = 'api/todo';
+let todos = [];
+
+function getItems() {
+    // <snippet_GetItems>
+    fetch(uri)
+        .then(response => response.json())
+        .then(data => _displayItems(data))
+        .catch(error => console.error('Unable to get items.', error));
+    // </snippet_GetItems>
 }
 
-$(document).ready(function () {
-    getData();
-});
-
-function getData() {
-    $.ajax({
-        type: "GET",
-        url: uri,
-        cache: false,
-        success: function (data) {
-            const tBody = $("#todos");
-
-            $(tBody).empty();
-
-            getCount(data.length);
-
-            $.each(data, function (key, item) {
-                const tr = $("<tr></tr>")
-                    .append(
-                        $("<td></td>").append(
-                            $("<input/>", {
-                                type: "checkbox",
-                                disabled: true,
-                                checked: item.isComplete
-                            })
-                        )
-                    )
-                    .append($("<td></td>").text(item.name))
-                    .append(
-                        $("<td></td>").append(
-                            $("<button>Edit</button>").on("click", function () {
-                                editItem(item.id);
-                            })
-                        )
-                    )
-                    .append(
-                        $("<td></td>").append(
-                            $("<button>Delete</button>").on("click", function () {
-                                deleteItem(item.id);
-                            })
-                        )
-                    );
-
-                tr.appendTo(tBody);
-            });
-
-            todos = data;
-        }
-    });
-}
-
+// <snippet_AddItem>
 function addItem() {
+    const addNameTextbox = document.getElementById('add-name');
+
     const item = {
-        name: $("#add-name").val(),
-        isComplete: false
+        isComplete: false,
+        name: addNameTextbox.value.trim()
     };
 
-    $.ajax({
-        type: "POST",
-        accepts: "application/json",
-        url: uri,
-        contentType: "application/json",
-        data: JSON.stringify(item),
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Something went wrong!");
+    fetch(uri, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
-        success: function (result) {
-            getData();
-            $("#add-name").val("");
-        }
-    });
+        body: JSON.stringify(item)
+    })
+        .then(response => response.json())
+        .then(() => {
+            getItems();
+            addNameTextbox.value = '';
+        })
+        .catch(error => console.error('Unable to add item.', error));
 }
+// </snippet_AddItem>
 
 function deleteItem(id) {
-    $.ajax({
-        url: uri + "/" + id,
-        type: "DELETE",
-        success: function (result) {
-            getData();
-        }
-    });
+    // <snippet_DeleteItem>
+    fetch(`${uri}/${id}`, {
+        method: 'DELETE'
+    })
+        .then(() => getItems())
+        .catch(error => console.error('Unable to delete item.', error));
+    // </snippet_DeleteItem>
 }
 
-function editItem(id) {
-    $.each(todos, function (key, item) {
-        if (item.id === id) {
-            $("#edit-name").val(item.name);
-            $("#edit-id").val(item.id);
-            $("#edit-isComplete")[0].checked = item.isComplete;
-        }
-    });
-    $("#spoiler").css({ display: "block" });
+function displayEditForm(id) {
+    const item = todos.find(item => item.id === id);
+
+    document.getElementById('edit-name').value = item.name;
+    document.getElementById('edit-id').value = item.id;
+    document.getElementById('edit-isComplete').checked = item.isComplete;
+    document.getElementById('editForm').style.display = 'block';
 }
 
-$(".my-form").on("submit", function () {
+function updateItem() {
+    const itemId = document.getElementById('edit-id').value;
     const item = {
-        name: $("#edit-name").val(),
-        isComplete: $("#edit-isComplete").is(":checked"),
-        id: $("#edit-id").val()
+        id: parseInt(itemId, 10),
+        isComplete: document.getElementById('edit-isComplete').checked,
+        name: document.getElementById('edit-name').value.trim()
     };
 
-    $.ajax({
-        url: uri + "/" + $("#edit-id").val(),
-        type: "PUT",
-        accepts: "application/json",
-        contentType: "application/json",
-        data: JSON.stringify(item),
-        success: function (result) {
-            getData();
-        }
-    });
+    // <snippet_UpdateItem>
+    fetch(`${uri}/${itemId}`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+        .then(() => getItems())
+        .catch(error => console.error('Unable to update item.', error));
+    // </snippet_UpdateItem>
 
     closeInput();
+
     return false;
-});
+}
 
 function closeInput() {
-    $("#spoiler").css({ display: "none" });
+    document.getElementById('editForm').style.display = 'none';
 }
+
+function _displayCount(itemCount) {
+    const name = (itemCount === 1) ? 'to-do' : 'to-dos';
+
+    document.getElementById('counter').innerText = `${itemCount} ${name}`;
+}
+
+function _displayItems(data) {
+    const tBody = document.getElementById('todos');
+    tBody.innerHTML = '';
+
+    _displayCount(data.length);
+
+    const button = document.createElement('button');
+
+    data.forEach(item => {
+        let isCompleteCheckbox = document.createElement('input');
+        isCompleteCheckbox.type = 'checkbox';
+        isCompleteCheckbox.disabled = true;
+        isCompleteCheckbox.checked = item.isComplete;
+
+        let editButton = button.cloneNode(false);
+        editButton.innerText = 'Edit';
+        editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
+
+        let deleteButton = button.cloneNode(false);
+        deleteButton.innerText = 'Delete';
+        deleteButton.setAttribute('onclick', `deleteItem(${item.id})`);
+
+        let tr = tBody.insertRow();
+
+        let td1 = tr.insertCell(0);
+        td1.appendChild(isCompleteCheckbox);
+
+        let td2 = tr.insertCell(1);
+        let textNode = document.createTextNode(item.name);
+        td2.appendChild(textNode);
+
+        let td3 = tr.insertCell(2);
+        td3.appendChild(editButton);
+
+        let td4 = tr.insertCell(3);
+        td4.appendChild(deleteButton);
+    });
+
+    todos = data;
+}
+// </snippet_SiteJs>

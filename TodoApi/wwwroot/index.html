@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-do CRUD</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -15,9 +14,9 @@
         <input type="submit" value="Add">
     </form>
 
-    <div id="spoiler">
+    <div id="editForm">
         <h3>Edit</h3>
-        <form class="my-form">
+        <form action="javascript:void(0);" onsubmit="updateItem()">
             <input type="hidden" id="edit-id">
             <input type="checkbox" id="edit-isComplete">
             <input type="text" id="edit-name">
@@ -30,7 +29,7 @@
 
     <table>
         <tr>
-            <th>Complete?</th>
+            <th>Is Complete?</th>
             <th>Name</th>
             <th><i class="fa fa-edit"></i></th>
             <th><i class="fa fa-trash"></i></th>
@@ -38,9 +37,9 @@
         <tbody id="todos"></tbody>
     </table>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-    <script src="site.js"></script>
+    <script src="site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        getItems();
+    </script>
 </body>
 </html>

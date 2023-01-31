@@ -2,7 +2,7 @@ input[type='submit'], button, [aria-label] {
     cursor: pointer;
 }
 
-#spoiler {
+#editForm {
     display: none;
 }
 
@@ -10,13 +10,12 @@ table {
     font-family: Arial, sans-serif;
     border: 1px solid;
     border-collapse: collapse;
-    width: 350px;
-    text-align: center;
 }
 
 th {
     background-color: #CC3300;
     color: white;
+    padding: 5px;
 }
 
 td {
