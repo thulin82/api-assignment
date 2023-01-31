@@ -21,6 +21,12 @@ pipeline {
                 // sh 'fab verifyUrl:http://host.docker.internal:8080/api/todo'
             // }
         // }
+		stage ('Deploy verify') {
+            agent { docker { image 'localhost:5000/my-python2' } }
+            steps {
+                sh "fab petstore-accessible --url=http://host.docker.internal:8080"
+            }
+        }
         stage('Test') {
             agent {
                 docker { image 'localhost:5000/todoapitests' }

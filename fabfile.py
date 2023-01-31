@@ -1,13 +1,16 @@
+from invoke import task
 import requests
 from retry import retry
-from fabric.api import env, task, run, execute, put, get, local, warn_only
 
 @task
+def petstore_accessible(c, url=None):
+    url = "http://localhost:8080" if url is None else url
+    return verify_access(url)
+
 @retry(tries=10, delay=2)
-def verifyUrl(url):
-    print("Verifying!")
+def verify_access(url):
     response = requests.get(url)
     if (response.status_code != 200):
-        raise Exception(f"Not accessible url: '{url}'")
+        raise Exception(f"Not accessible url: '{url}''")
     print(f"Correctly verified: '{url}'\n")
     return True
