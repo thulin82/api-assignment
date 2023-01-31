@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 echo "Verifying...."
-                sh 'fab verifyUrl:http://host.docker.internal:8080/api/todo'
+                sh 'fab verifyUrl:https://www.google.com'
             }
         }
         stage('Test') {
@@ -26,7 +26,7 @@ pipeline {
                 docker { image 'localhost:5000/todoapitests' }
             }
             steps {
-                sh 'cd /home/TodoApiTests;pwd;ls;dotnet test --logger:trx TodoApiTests.csproj'
+                sh 'cd /app/TodoApiTests;pwd;ls;dotnet test --logger:trx TodoApiTests.csproj'
             }
         }
     }
