@@ -28,7 +28,8 @@ pipeline {
             steps {
                 sh 'cd /home/docker/TodoApiTests;ls -la;dotnet vstest out/TodoApiTests.dll --logger:trx'
                 sh 'cd /home/docker/TodoApiTests/TestResults; ls'
-                sh "cp -R /home/docker/TodoApiTests/TestResults ${WORKSPACE}"
+                sh 'cp -R /home/docker/TodoApiTests/TestResults results'
+                sh 'cd results; ls; pwd'
             }
         }
     }
