@@ -1,7 +1,7 @@
 version: "3.4"
 services:
-    petstore:
+    todoapi:
         image: "localhost:5000/todoapi"
-        container_name: todoapi
+        container_name: todoapijenkins
         ports:
             - "8080:8080"
