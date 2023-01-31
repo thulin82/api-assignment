@@ -40,7 +40,7 @@ pipeline {
         always {
                 sh 'docker-compose down'
                 sh 'pwd; ls -la'
-                step([$class: 'MSTestPublisher', testResultsFile:"reports/*.trx", failOnError: false, keepLongStdio: true])
+                step([$class: 'MSTestPublisher', testResultsFile:"results/*.trx", failOnError: false, keepLongStdio: true])
         }
     }
 }
