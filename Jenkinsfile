@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 echo "Verifying...."
-                sh 'fab verifyUrl:http://host.docker.internal:8080'
+                sh 'fab verifyUrl:http://host.docker.internal:8080/api/todo'
             }
         }
         stage('Test') {
