@@ -1,4 +1,4 @@
-# [API Assignment](https://gitlab.com/test-star/markus.thulin/api-assignment)
+# [API Assignment](https://github.com/thulin82/api-assignment)
 ## Todo Application based on API backend
 ### How to use (locally)
 ####  Build
@@ -33,7 +33,7 @@ cd ..
 ```
 #### Step-by-step instructions
 1. Set up Jenkins (plugins needed: basic+MSTest Plugin (for trx test reports))
-2. Go to [Test Repo](https://gitlab.com/test-star/markus.thulin/api-assignment-tests) and build and push image to local registry
+2. Go to [Test Repo](https://github.com/thulin82/api-assignment-tests) and build and push image to local registry
 3. Create pipeline in Jenkins
 4. Run the pipeline
 
