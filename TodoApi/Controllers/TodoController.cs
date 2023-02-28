@@ -17,7 +17,7 @@ namespace TodoApi.Controllers
         {
             _context = context;
 
-            if (_context.TodoItems.Count() == 0)
+            if (!_context.TodoItems.Any())
             {
                 // Create a new TodoItem if collection is empty,
                 // which means you can't delete all TodoItems.
@@ -31,6 +31,20 @@ namespace TodoApi.Controllers
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
             return await _context.TodoItems.ToListAsync();
+        }
+
+        // GET: api/Todo/complete
+        [HttpGet("complete")]
+        public async Task<ActionResult<IEnumerable<TodoItem>>> GetCompleteItems()
+        {
+            return await _context.TodoItems.Where(t => t.IsComplete).ToListAsync();
+        }
+
+        // GET: api/Todo/complete
+        [HttpGet("incomplete")]
+        public async Task<ActionResult<IEnumerable<TodoItem>>> GetIncompleteItems()
+        {
+            return await _context.TodoItems.Where(t => !t.IsComplete).ToListAsync();
         }
 
         // GET: api/Todo/5
@@ -54,7 +68,12 @@ namespace TodoApi.Controllers
             return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id }, item);
         }
 
-        // PUT: api/Todo/5
+        /// <summary>
+        /// Updates a specific TodoItem
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(long id, TodoItem item)
         {
@@ -69,7 +88,11 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Todo/5
+        /// <summary>
+        /// Deletes a specific TodoItem.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
