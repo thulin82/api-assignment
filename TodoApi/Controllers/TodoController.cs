@@ -7,12 +7,19 @@ using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {
+    /// <summary>
+    /// TodoController
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase
     {
         private readonly TodoContext _context;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context"></param>
         public TodoController(TodoContext context)
         {
             _context = context;
@@ -26,28 +33,41 @@ namespace TodoApi.Controllers
             }
         }
 
-        // GET: api/Todo
+        /// <summary>
+        /// Gets all TodoItems
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
             return await _context.TodoItems.ToListAsync();
         }
 
-        // GET: api/Todo/complete
+        /// <summary>
+        /// Gets all complete TodoItems
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("complete")]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetCompleteItems()
         {
             return await _context.TodoItems.Where(t => t.IsComplete).ToListAsync();
         }
 
-        // GET: api/Todo/complete
+        /// <summary>
+        /// Gets all incomplete TodoItems
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("incomplete")]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetIncompleteItems()
         {
             return await _context.TodoItems.Where(t => !t.IsComplete).ToListAsync();
         }
 
-        // GET: api/Todo/5
+        /// <summary>
+        /// Gets a specific TodoItem
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
@@ -58,7 +78,11 @@ namespace TodoApi.Controllers
             return todoItem;
         }
 
-        // POST api/Todo
+        /// <summary>
+        /// Creates a TodoItem
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
         {

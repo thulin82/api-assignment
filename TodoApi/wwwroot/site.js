@@ -1,17 +1,19 @@
-// <snippet_SiteJs>
 const uri = 'api/todo';
 let todos = [];
 
+/**
+ * Fetches the list of todos from the backend api and displays them.
+ */
 function getItems() {
-    // <snippet_GetItems>
     fetch(uri)
         .then(response => response.json())
         .then(data => _displayItems(data))
         .catch(error => console.error('Unable to get items.', error));
-    // </snippet_GetItems>
 }
 
-// <snippet_AddItem>
+/**
+ * Adds a new todo to the backend api and refreshes the list.
+ */
 function addItem() {
     const addNameTextbox = document.getElementById('add-name');
 
@@ -35,27 +37,22 @@ function addItem() {
         })
         .catch(error => console.error('Unable to add item.', error));
 }
-// </snippet_AddItem>
 
+/**
+ * Deletes a todo from the backend api and refreshes the list.
+ * @param {int} id The id of the todo to delete.
+ */
 function deleteItem(id) {
-    // <snippet_DeleteItem>
     fetch(`${uri}/${id}`, {
         method: 'DELETE'
     })
         .then(() => getItems())
         .catch(error => console.error('Unable to delete item.', error));
-    // </snippet_DeleteItem>
 }
 
-function displayEditForm(id) {
-    const item = todos.find(item => item.id === id);
-
-    document.getElementById('edit-name').value = item.name;
-    document.getElementById('edit-id').value = item.id;
-    document.getElementById('edit-isComplete').checked = item.isComplete;
-    document.getElementById('editForm').style.display = 'block';
-}
-
+/**
+ * Updates a todo in the backend api and refreshes the list.
+ */
 function updateItem() {
     const itemId = document.getElementById('edit-id').value;
     const item = {
@@ -64,7 +61,6 @@ function updateItem() {
         name: document.getElementById('edit-name').value.trim()
     };
 
-    // <snippet_UpdateItem>
     fetch(`${uri}/${itemId}`, {
         method: 'PUT',
         headers: {
@@ -75,23 +71,46 @@ function updateItem() {
     })
         .then(() => getItems())
         .catch(error => console.error('Unable to update item.', error));
-    // </snippet_UpdateItem>
 
     closeInput();
 
     return false;
 }
 
+/**
+ * Displays the edit form for a todo.
+ * @param {int} id 
+ */
+function displayEditForm(id) {
+    const item = todos.find(item => item.id === id);
+
+    document.getElementById('edit-name').value = item.name;
+    document.getElementById('edit-id').value = item.id;
+    document.getElementById('edit-isComplete').checked = item.isComplete;
+    document.getElementById('editForm').style.display = 'block';
+}
+
+/**
+ * Closes the edit form.
+ */
 function closeInput() {
     document.getElementById('editForm').style.display = 'none';
 }
 
+/**
+ * Displays the number of todos in the list.
+ * @param {int} itemCount The number of todos in the list.
+ */
 function _displayCount(itemCount) {
     const name = (itemCount === 1) ? 'to-do' : 'to-dos';
 
     document.getElementById('counter').innerText = `${itemCount} ${name}`;
 }
 
+/**
+ * Displays a list of todos.
+ * @param {*} data  An array of todo objects to display.
+ */
 function _displayItems(data) {
     const tBody = document.getElementById('todos');
     tBody.innerHTML = '';
@@ -132,4 +151,3 @@ function _displayItems(data) {
 
     todos = data;
 }
-// </snippet_SiteJs>
