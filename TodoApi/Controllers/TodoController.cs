@@ -24,7 +24,7 @@ namespace TodoApi.Controllers
         {
             _context = context;
 
-            if (!_context.TodoItems.Any())
+            if (_context.TodoItems.Count() == 0)
             {
                 // Create a new TodoItem if collection is empty,
                 // which means you can't delete all TodoItems.
